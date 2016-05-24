@@ -1,0 +1,128 @@
+{
+  "name": "stanza.io",
+  "description": "Modern XMPP in the browser, with a JSON API",
+  "version": "7.3.6",
+  "author": {
+    "name": "Lance Stout",
+    "email": "lance@andyet.net"
+  },
+  "browser": {
+    "request": "xhr",
+    "faye-websocket": false,
+    "./lib/plugins/index.js": "./lib/plugins/index-browser.js"
+  },
+  "browserify": {
+    "transform": [
+      [
+        "browserify-versionify",
+        {
+          "placeholder": "__STANZAIO_VERSION__"
+        }
+      ]
+    ]
+  },
+  "bugs": {
+    "url": "https://github.com/otalk/stanza.io/issues"
+  },
+  "contributors": [
+    {
+      "name": "Philipp Hancke",
+      "email": "fippo@andyet.net"
+    },
+    {
+      "name": "Steven Lloyd Watkin",
+      "email": "lloyd@evilprofessor.co.uk"
+    }
+  ],
+  "dependencies": {
+    "alt-sasl-digest-md5": "^1.0.0",
+    "async": "^1.4.0",
+    "bluebird": "^2.3.2",
+    "browserify-versionify": "^1.0.4",
+    "faye-websocket": "^0.10.0",
+    "hostmeta": "^2.0.0",
+    "iana-hashes": "^1.0.2",
+    "jingle": "^1.5.1",
+    "jxt": "^3.0.1",
+    "jxt-xmpp": "^1.1.3",
+    "jxt-xmpp-types": "^3.0.0",
+    "lodash.assign": "^3.0.0",
+    "lodash.filter": "^3.1.0",
+    "lodash.foreach": "^3.0.2",
+    "lodash.isarray": "^3.0.1",
+    "lodash.uniq": "^3.1.0",
+    "request": "^2.53.0",
+    "sasl-anonymous": "^0.1.0",
+    "sasl-external": "^0.1.0",
+    "sasl-plain": "^0.1.0",
+    "sasl-scram-sha-1": "git://github.com/sarumjanuch/js-sasl-scram-sha-1.git",
+    "saslmechanisms": "^0.1.1",
+    "uuid": "^2.0.1",
+    "wildemitter": "^1.0.1",
+    "xhr": "^2.0.1",
+    "xmpp-jid": "^1.0.0"
+  },
+  "devDependencies": {
+    "browserify": "^11.0.1",
+    "jshint": "^2.6.3",
+    "make-better": "^0.4.1",
+    "precommit-hook": "^3.0.0",
+    "tap-spec": "^4.1.0",
+    "tape": "^4.2.0",
+    "uglify-js": "^2.4.24"
+  },
+  "homepage": "http://stanza.io",
+  "keywords": [
+    "XMPP",
+    "xmpp",
+    "websocket",
+    "stanza",
+    "json",
+    "bosh",
+    "stanza.io",
+    "otalk",
+    "jingle"
+  ],
+  "license": "MIT",
+  "main": "./index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/otalk/stanza.io.git"
+  },
+  "scripts": {
+    "build": "make build",
+    "test": "make test",
+    "lint": "jshint .",
+    "validate": "npm ls"
+  },
+  "testling": {
+    "files": [
+      "test/connection.js"
+    ],
+    "browsers": [
+      "ie/10..latest",
+      "chrome/20..latest",
+      "chrome/canary",
+      "firefox/10..latest",
+      "firefox/nightly",
+      "opera/next",
+      "safari/6..latest",
+      "iphone/6..latest",
+      "ipad/6..latest",
+      "android-browser/4.2..latest"
+    ]
+  },
+  "pre-commit": [
+    "lint",
+    "validate",
+    "test"
+  ],
+  "readme": "# Stanza.io\n**Modern XMPP in the browser, with a JSON API.**\n\n[![Build Status](https://travis-ci.org/otalk/stanza.io.png)](https://travis-ci.org/otalk/stanza.io)\n[![Dependency Status](https://david-dm.org/otalk/stanza.io.png)](https://david-dm.org/otalk/stanza.io)\n[![devDependency Status](https://david-dm.org/otalk/stanza.io/dev-status.png)](https://david-dm.org/otalk/stanza.io#info=devDependencies)\n\n<!--[![Browser Support](https://ci.testling.com/otalk/stanza.io.png)](https://ci.testling.com/otalk/stanza.io)-->\n\n## What is this?\n\nStanza.io is a library for using modern XMPP in the browser, and it does that by exposing everything as JSON. Unless you insist, you\nhave no need to ever see or touch any XML when using stanza.io.\n\n## Important Protocol Changes\n\nStarting with `v4.0.0`, stanza.io is using the protocol specified in [RFC 7395](http://tools.ietf.org/html/rfc7395) by default, which contains backwards incompatible changes.\n\nServers have started switching to using the RFC version of the WebSocket binding; notably, Prosody's WebSocket module for `prosody-0.10`. If your server has not yet been upgraded, you can set `transports` to `['old-websocket']` in the config:\n\n```javascript\nvar oldws = XMPP.createClient({\n    ...\n    transports: ['old-websocket']\n});\n```\n\n## Stanza Definitions Moved\n\nAs of `v7.3.0`, the XML/JSON mapping definitions have been split out into the [jxt-xmpp module](https://github.com/otalk/jxt-xmpp) to allow their use outside of stanza.io itself.\n\n## Installing\n\n```sh\n$ npm install stanza.io\n\n```\n## Building bundled/minified version (for AMD, etc)\n\nFirst run `npm install` to get all of the dependencies, and then run `make`:\n\n```sh\n$ npm install\n$ make\n```\n\nThe bundled and minified files will be in the generated `build` directory.\n\n## Getting Started\n\n1. Find or install a server which supports XMPP over WebSocket (Prosody recommended).\n2. Run `npm install` in the `node_modules/stanza.io` directory.\n3. Run `make` to build `build/stanzaio.bundle.js`.\n4. Open `demo.html` in your browser.\n5. Enter your connection info, click connect.\n6. Use the JS console to play with the XMPP client (`var client`).\n\n## Echo Client Demo\n\n```javascript\nvar XMPP = require('stanza.io'); // if using browserify\n\nvar client = XMPP.createClient({\n    jid: 'echobot@example.com',\n    password: 'hunter2',\n\n    // If you have a .well-known/host-meta.json file for your\n    // domain, the connection transport config can be skipped.\n\n    transport: 'websocket',\n    wsURL: 'wss://example.com:5281/xmpp-websocket'\n    // (or `boshURL` if using 'bosh' as the transport)\n});\n\nclient.on('session:started', function () {\n    client.getRoster();\n    client.sendPresence();\n});\n\nclient.on('chat', function (msg) {\n    client.sendMessage({\n      to: msg.from,\n      body: 'You sent: ' + msg.body\n    });\n});\n\nclient.connect();\n```\n\n## Documentation\n\n- [API Reference](docs/Reference.md)\n- [Supported XEPs](docs/Supported_XEPs.md)\n- [Creating Plugins](docs/Create_Plugin.md)\n- [Using PubSub](docs/Using_Pubsub.md)\n\n## License\n\nMIT\n\n## Created By\n\nIf you like this, follow [@lancestout](http://twitter.com/lancestout) on twitter.\n",
+  "readmeFilename": "README.md",
+  "_id": "stanza.io@7.3.6",
+  "dist": {
+    "shasum": "3d98ad24d6c08071aff1a2006995dd5c06091ac9"
+  },
+  "_resolved": "git://github.com/sarumjanuch/stanza.io.git#0eae481598bee2bf10ac0650bb067e248d04c206",
+  "_from": "git://github.com/sarumjanuch/stanza.io.git"
+}
