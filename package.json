@@ -40,7 +40,6 @@
     "bluebird": "^2.3.2",
     "browserify-versionify": "^1.0.4",
     "faye-websocket": "^0.10.0",
-    "hostmeta": "^2.0.0",
     "iana-hashes": "^1.0.2",
     "lodash.assign": "^3.0.0",
     "lodash.filter": "^3.1.0",
