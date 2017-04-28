@@ -46,6 +46,7 @@
     "lodash.foreach": "^3.0.2",
     "lodash.isarray": "^3.0.1",
     "lodash.uniq": "^3.1.0",
+    "lodash.pluck": "^3.1.2",
     "request": "^2.53.0",
     "sasl-anonymous": "^0.1.0",
     "sasl-external": "^0.1.0",

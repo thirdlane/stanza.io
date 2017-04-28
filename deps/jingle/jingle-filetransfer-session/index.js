@@ -2,7 +2,7 @@ var util = require('util');
 var extend = require('extend-object');
 var BaseSession = require('jingle-session');
 var RTCPeerConnection = require('rtcpeerconnection');
-var FileTransfer = require('filetransfer/hashed');
+var FileTransfer = require('./filetransfer/hashed');
 
 
 function FileTransferSession(opts) {
