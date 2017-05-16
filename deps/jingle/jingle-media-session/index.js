@@ -143,7 +143,7 @@ MediaSession.prototype = extend(MediaSession.prototype, {
 
             offer.jingle.contents.forEach(filterUnusedLabels);
             if(opts && opts.members){
-                offer.jingle.members = []
+                offer.jingle.members = [];
                 offer.jingle.members.push({members: opts.members});
             }
             self.send('session-initiate', offer.jingle);
