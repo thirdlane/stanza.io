@@ -5,7 +5,7 @@ var SJJ = require('sdp-jingle-json');
 var WildEmitter = require('wildemitter');
 var peerconn = require('traceablepeerconnection');
 var adapter = require('webrtc-adapter-test');
-var SdpParser = require("sdpparser");
+//var SdpParser = require("sdpparser");
 
 
 function PeerConnection(config, constraints) {
@@ -404,87 +404,7 @@ PeerConnection.prototype.offer = function (constraints, cb) {
             }
             self._candidateBuffer = [];
 
-            var transform = require('sdp-transform');
 
-            offer.sdp = removeCodec(offer.sdp,"H264");
-            offer.sdp = removeCodec(offer.sdp,"VP9");
-
-           var sdpObj = transform.parse(offer.sdp);
-
-            sdpObj.media.forEach(function(media){
-                if (media.type === 'video') {
-                    media.rtcpFb = [
-                        {
-                            "payload":100,
-                            "type":"ccm",
-                            "subtype":"fir"
-                        },
-                        {
-                            "payload":100,
-                            "type":"nack"
-                        },
-                        {
-                            "payload":100,
-                            "type":"nack",
-                            "subtype":"pli"
-                        },
-                        {
-                            "payload":100,
-                            "type":"goog-remb"
-                        },
-                        {
-                            "payload":100,
-                            "type":"transport-cc"
-                        },
-                        {
-                            "payload":101,
-                            "type":"ccm",
-                            "subtype":"fir"
-                        },
-                        {
-                            "payload":101,
-                            "type":"nack"
-                        },
-                        {
-                            "payload":101,
-                            "type":"nack",
-                            "subtype":"pli"
-                        },
-                        {
-                            "payload":101,
-                            "type":"goog-remb"
-                        },
-                        {
-                            "payload":101,
-                            "type":"transport-cc"
-                        }
-                    ];
-
-                    media.rtp = [
-                        {
-                            "payload":100,
-                            "codec":"VP8",
-                            "rate":90000
-                        },
-                        {
-                            "payload":101,
-                            "codec":"rtx",
-                            "rate":90000
-                        },
-                    ];
-
-                    media.fmtp = [
-                        {
-                            "payload":101,
-                            "config":"apt=100"
-                        }
-                    ];
-
-                    media.payloads = "100 101"
-                }
-            });
-
-            offer.sdp = transform.write(sdpObj);
 
 
 
@@ -532,7 +452,7 @@ PeerConnection.prototype.offer = function (constraints, cb) {
 
 
 
-             /*offer.sdp = offer.sdp.replace(/a=rtpmap:97 rtx\/90000\r\n/i,"");
+            /*offer.sdp = offer.sdp.replace(/a=rtpmap:97 rtx\/90000\r\n/i,"");
              offer.sdp = offer.sdp.replace(/a=fmtp:97 apt=96\r\n/i,"");
              offer.sdp = offer.sdp.replace(/a=rtpmap:102 red\/90000\r\n/i,"");
              offer.sdp = offer.sdp.replace(/a=rtpmap:127 ulpfec\/90000\r\n/i,"")
@@ -738,27 +658,27 @@ PeerConnection.prototype.handleAnswer = function (answer, cb) {
     cb = cb || function () {};
     var self = this;
     /*answer.jingle.contents.forEach(function (content) {
-        if (content.name === 'audio') {
-            var sources = content.description.sources || [];
-            //if (sources.length === 0 || sources[0].ssrc !== "2976579765") {
-            if (sources.length === 0) {
-                sources.unshift({
-                    ssrc: "2976579765",
-                    parameters: [
-                        {
-                            key: "cname",
-                            value: "mixer-hyixer"
-                        },
-                        {
-                            key: "msid",
-                            value: "mixed audio"
-                        }
-                    ]
-                });
-                content.description.sources = sources;
-            }
-        }
-    });*/
+     if (content.name === 'audio') {
+     var sources = content.description.sources || [];
+     //if (sources.length === 0 || sources[0].ssrc !== "2976579765") {
+     if (sources.length === 0) {
+     sources.unshift({
+     ssrc: "2976579765",
+     parameters: [
+     {
+     key: "cname",
+     value: "mixer-hyixer"
+     },
+     {
+     key: "msid",
+     value: "mixed audio"
+     }
+     ]
+     });
+     content.description.sources = sources;
+     }
+     }
+     });*/
     if (answer.jingle) {
         answer.sdp = SJJ.toSessionSDP(answer.jingle, {
             sid: self.config.sdpSessionID,
@@ -772,7 +692,7 @@ PeerConnection.prototype.handleAnswer = function (answer, cb) {
             self._checkRemoteCandidate(line);
         }
     });
-    var sdp = SdpParser.parse(answer.sdp);
+    /*var sdp = SdpParser.parse(answer.sdp);
     sdp.media.forEach(function(media){
         if(media.type === 'video' && media.inactive && !media['ice-pwd'] && !media['ice-ufrag']) {
             delete media.fingerprint;
@@ -780,7 +700,10 @@ PeerConnection.prototype.handleAnswer = function (answer, cb) {
             delete media.mid;
         }
     });
-    answer.sdp = SdpParser.format(sdp);
+    answer.sdp = SdpParser.format(sdp);*/
+
+
+
 
     //To UnifiedPlan
     if(adapter.webrtcDetectedBrowser === 'firefox' && self.isInitiator && self.calleeBrowser === 'chrome') {
