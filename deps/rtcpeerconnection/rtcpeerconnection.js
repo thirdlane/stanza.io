@@ -404,7 +404,87 @@ PeerConnection.prototype.offer = function (constraints, cb) {
             }
             self._candidateBuffer = [];
 
+            var transform = require('sdp-transform');
 
+            offer.sdp = removeCodec(offer.sdp,"H264");
+            offer.sdp = removeCodec(offer.sdp,"VP9");
+
+            var sdpObj = transform.parse(offer.sdp);
+
+            sdpObj.media.forEach(function(media){
+                if (media.type === 'video') {
+                    media.rtcpFb = [
+                        {
+                            "payload":100,
+                            "type":"ccm",
+                            "subtype":"fir"
+                        },
+                        {
+                            "payload":100,
+                            "type":"nack"
+                        },
+                        {
+                            "payload":100,
+                            "type":"nack",
+                            "subtype":"pli"
+                        },
+                        {
+                            "payload":100,
+                            "type":"goog-remb"
+                        },
+                        {
+                            "payload":100,
+                            "type":"transport-cc"
+                        },
+                        {
+                            "payload":101,
+                            "type":"ccm",
+                            "subtype":"fir"
+                        },
+                        {
+                            "payload":101,
+                            "type":"nack"
+                        },
+                        {
+                            "payload":101,
+                            "type":"nack",
+                            "subtype":"pli"
+                        },
+                        {
+                            "payload":101,
+                            "type":"goog-remb"
+                        },
+                        {
+                            "payload":101,
+                            "type":"transport-cc"
+                        }
+                    ];
+
+                    media.rtp = [
+                        {
+                            "payload":100,
+                            "codec":"VP8",
+                            "rate":90000
+                        },
+                        {
+                            "payload":101,
+                            "codec":"rtx",
+                            "rate":90000
+                        },
+                    ];
+
+                    media.fmtp = [
+                        {
+                            "payload":101,
+                            "config":"apt=100"
+                        }
+                    ];
+
+                    media.payloads = "100 101"
+                }
+            });
+
+            offer.sdp = transform.write(sdpObj);
 
 
 
@@ -692,6 +772,8 @@ PeerConnection.prototype.handleAnswer = function (answer, cb) {
             self._checkRemoteCandidate(line);
         }
     });
+
+    /*TODO: Get back to this when we will work on firefox
     /*var sdp = SdpParser.parse(answer.sdp);
     sdp.media.forEach(function(media){
         if(media.type === 'video' && media.inactive && !media['ice-pwd'] && !media['ice-ufrag']) {
@@ -701,9 +783,6 @@ PeerConnection.prototype.handleAnswer = function (answer, cb) {
         }
     });
     answer.sdp = SdpParser.format(sdp);*/
-
-
-
 
     //To UnifiedPlan
     if(adapter.webrtcDetectedBrowser === 'firefox' && self.isInitiator && self.calleeBrowser === 'chrome') {
