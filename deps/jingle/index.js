@@ -76,9 +76,7 @@ function SessionManager(conf) {
         peerConnectionConstraints: {
             optional: [
                 {DtlsSrtpKeyAgreement: true},
-                {RtpDataChannels: false}
-            ],
-            advanced: [
+                {RtpDataChannels: false},
                 {enableIPv6: !!conf.dontGatherIPv6Candidates || true}
             ]
         },
