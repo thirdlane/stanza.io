@@ -75,7 +75,7 @@ function SessionManager(conf) {
             optional: [
                 {DtlsSrtpKeyAgreement: true},
                 {RtpDataChannels: false},
-                {enableIPv6:  true}
+                {googIPv6:  true}
             ]
         },
 
@@ -111,8 +111,8 @@ SessionManager.prototype.addICEServer = function (server) {
 
 SessionManager.prototype.setIPv6Support = function (bool) {
     this.config.peerConnectionConstraints.optional.forEach(function(constraint) {
-        if (constraint.hasOwnProperty('enableIPv6')) {
-            constraint.enableIPv6 = bool;
+        if (constraint.hasOwnProperty('googIPv6')) {
+            constraint.googIPv6 = bool;
         }
     });
 };
