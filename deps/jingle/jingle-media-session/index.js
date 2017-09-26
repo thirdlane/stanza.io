@@ -52,7 +52,7 @@ function MediaSession(opts) {
         iceServers: opts.iceServers || [],
         useJingle: true,
         rtcpMuxPolicy: 'require',
-        iceTransportPolicy: opts.iceTransportPolicy || 'all'
+        iceTransportPolicy: opts.parent.config.peerConnectionConfig.iceTranpsportPolicy || 'all'
     }, opts.constraints || {});
 
     this.pc.on('ice', this.onIceCandidate.bind(this));

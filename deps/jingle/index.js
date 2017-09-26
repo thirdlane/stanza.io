@@ -65,19 +65,17 @@ function SessionManager(conf) {
         ];
     }
 
-    var iceTranpsportPolicy = conf.gatherOnlyRelayCandidates ? 'relay' : 'all';
-
     this.config = {
         debug: false,
         peerConnectionConfig: {
             iceServers: conf.iceServers || [{'url': 'stun:stun.l.google.com:19302'}],
-            iceTranpsportPolicy: iceTranpsportPolicy
+            iceTranpsportPolicy: 'all'
         },
         peerConnectionConstraints: {
             optional: [
                 {DtlsSrtpKeyAgreement: true},
                 {RtpDataChannels: false},
-                {enableIPv6: !!conf.dontGatherIPv6Candidates || true}
+                {enableIPv6:  true}
             ]
         },
 
@@ -108,6 +106,19 @@ SessionManager.prototype.addICEServer = function (server) {
         server = {url: server};
     }
     this.iceServers.push(server);
+};
+
+
+SessionManager.prototype.setIPv6Support = function (bool) {
+    this.config.peerConnectionConstraints.optional.forEach(function(constraint) {
+        if (constraint.hasOwnProperty('enableIPv6')) {
+            constraint.enableIPv6 = bool;
+        }
+    });
+};
+
+SessionManager.prototype.setIceTransportPolicy = function (mode) {
+    this.config.peerConnectionConfig.iceTranpsportPolicy = mode;
 };
 
 SessionManager.prototype.addSession = function (session) {
