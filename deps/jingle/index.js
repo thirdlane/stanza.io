@@ -65,17 +65,24 @@ function SessionManager(conf) {
         ];
     }
 
+    var iceTranpsportPolicy = conf.gatherOnlyRelayCandidates ? 'relay' : 'all';
+
     this.config = {
         debug: false,
         peerConnectionConfig: {
-            iceServers: conf.iceServers || [{'url': 'stun:stun.l.google.com:19302'}]
+            iceServers: conf.iceServers || [{'url': 'stun:stun.l.google.com:19302'}],
+            iceTranpsportPolicy: iceTranpsportPolicy
         },
         peerConnectionConstraints: {
             optional: [
                 {DtlsSrtpKeyAgreement: true},
                 {RtpDataChannels: false}
+            ],
+            advanced: [
+                {enableIPv6: !!conf.dontGatherIPv6Candidates || true}
             ]
         },
+
         media: {
             audio: true,
             video: true
