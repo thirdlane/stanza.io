@@ -118,7 +118,7 @@ exports.setSubAttribute = function (xml, NS, sub, attr, value) {
 };
 
 exports.getBoolSubAttribute = function (xml, NS, sub, attr, defaultVal) {
-    var val = exports.setSubAttribute(xml, NS, sub, attr, value) || defaultVal || '';
+    var val = exports.getSubAttribute(xml, NS, sub, attr, defaultVal);
     return val === 'true' || val === '1';
 };
 
