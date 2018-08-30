@@ -30,8 +30,8 @@ exports.subAttribute = field(
     helpers.setSubAttribute);
 
 exports.boolSubAttribute = field(
-    helpers.getSubBoolAttribute,
-    helpers.setSubBoolAttribute);
+    helpers.getBoolSubAttribute,
+    helpers.setBoolSubAttribute);
 
 exports.text = field(
     helpers.getText,
