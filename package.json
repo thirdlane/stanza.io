@@ -46,7 +46,6 @@
     "lodash.isarray": "^3.0.1",
     "lodash.uniq": "^3.1.0",
     "lodash.pluck": "^3.1.2",
-    "request": "^2.53.0",
     "sasl-plain": "^0.1.0",
     "saslmechanisms": "^0.1.1",
     "uuid": "^2.0.1",
