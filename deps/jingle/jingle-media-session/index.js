@@ -51,6 +51,7 @@ function MediaSession(opts) {
     this.pc = new RTCPeerConnection({
         iceServers: opts.iceServers || [],
         useJingle: true,
+        sdpSemantics: 'plan-b',
         rtcpMuxPolicy: 'require',
         iceTransportPolicy: opts.parent.config.peerConnectionConfig.iceTranpsportPolicy || 'all'
     }, opts.constraints || {});
