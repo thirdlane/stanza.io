@@ -1,6 +1,8 @@
 # Stanza.io
 **Modern XMPP in the browser, with a JSON API.**
 
+
+this is test
 [![Build Status](https://travis-ci.org/otalk/stanza.io.png)](https://travis-ci.org/otalk/stanza.io)
 [![Dependency Status](https://david-dm.org/otalk/stanza.io.png)](https://david-dm.org/otalk/stanza.io)
 [![devDependency Status](https://david-dm.org/otalk/stanza.io/dev-status.png)](https://david-dm.org/otalk/stanza.io#info=devDependencies)
